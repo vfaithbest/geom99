@@ -1,0 +1,142 @@
+<html>
+    <!--Source of code before being modified by Faith Best: https://developers.arcgis.com/javascript/latest/tutorials/display-a-pop-up/-->
+<head>
+  <meta name="description" content="Configure a popup">
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Exploring Canada! </title>
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 500px;
+      width: 100%;
+    }
+    h1, h2, h3,p,li{
+        font-family:'Times New Roman', Times, serif;
+    }
+    h1{
+        font-size:33px ;
+        margin: 35px;
+        color: crimson;
+    }
+    h2{
+        font-size: large;
+    }
+    h3{
+        font-size: 18px ;
+        font-style: unset;
+    }
+    p, li{
+        font-size: 15px;
+        font-style:unset;
+    }
+    .textbox{
+        margin: 35px
+    }
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.28/"></script>
+
+ <script>
+
+  require([
+      "esri/config",
+      "esri/Map",
+      "esri/views/MapView",
+
+      "esri/layers/FeatureLayer"
+    ],
+
+    function(esriConfig, Map, MapView, FeatureLayer){
+
+     esriConfig.apiKey = "AAPK7ea8e38f6b4b4f969ab170c41c01634akao_m4e5gL3AyABug_bvD9dN7kbXw7BSISXg4Y558XYUVj59ej6DtByYM0Cms4Tz";
+
+      const map = new Map({
+        basemap: "arcgis/navigation" // basemap styles service
+      });
+
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-99.4569,55.5899], //Longitude, latitude
+        zoom: 2
+      });
+
+      // Define a pop-up for ProvincePopUP
+      const popupProvBoundary = {
+        "title": "This area outlined is:",
+        "content": "{PRNAME}"
+      }
+
+    const ProvincePopUP = new FeatureLayer({
+        url: "https://luna.flemingcollege.ca/arcgis/rest/services/geom99pm/FBestCanada/MapServer/0",
+        outFields: ["PRNAME"],
+        popupTemplate: popupProvBoundary
+      });
+
+      map.add(ProvincePopUP);
+
+
+      
+      // Define a pop-up for ProvinceCapitalPopUP
+      const popupProvCapital = {
+        "title": "Welcome to {CapitalName}!",
+        "content": "<b>This is the capital of:</b> {ProvinceName}<br><b>Description:</b>{Description}"
+      }
+
+    const ProvinceCapPopUP = new FeatureLayer({
+        url: "https://services1.arcgis.com/pMeXRvgWClLJZr3s/ArcGIS/rest/services/FBestMapCanadaCapitals/FeatureServer/1",
+        outFields: ["CapitalName", "ProvinceName","Description"],
+        popupTemplate: popupProvCapital
+      });
+
+      map.add(ProvinceCapPopUP);
+
+    // Define a pop-up for OttawaPopUP
+    const popupProvOttawa = {
+        "title": "Welcome to Capital of Canada!",
+        "content": "<b>Name:</b> {CapitalName}<br><b>Description:</b>{Description}"
+      }
+
+    const OttawaCapPopUP = new FeatureLayer({
+        url: "https://services1.arcgis.com/pMeXRvgWClLJZr3s/ArcGIS/rest/services/FBestMapCanadaCapitals/FeatureServer/0",
+        outFields: ["CapitalName","Description"],
+        popupTemplate: popupProvOttawa
+      });
+
+      map.add(OttawaCapPopUP);
+
+    });
+  </script>
+
+<body>
+    <heading>
+        <h1>Exploring Canada</h1>
+    </heading>
+    <div class="textbox">
+        <h2>Canada, home to more than just Polar Bears</h2>
+        <p>Welcome to Canada, the land of maple syrup, hockey, and breathtaking adventures! Did you know that Canada is the second-largest country in the world? That means there's so much to explore, from the towering Rocky Mountains in the west to the stunning Atlantic coastline in the east. Canada is also home to incredible wildlife, like polar bears in the north and moose in the forests. And let's not forget about the diverse cities, like Toronto, Vancouver, and Montreal, each with its own unique charm and culture. So whether you're skiing down snowy slopes, kayaking on crystal-clear lakes, or munching on poutine (fries with cheese curds and gravy), Canada has something for everyone to enjoy! 🇨🇦🍁</p>
+        <h2>How well do you know Canada?</h2>
+        <h3>Follow the prompts and explore the map to answer the questions</h3>
+        <ul>
+            <li>What is the nickname given to Saskatchewan due to its wide-open spaces and big, open skies?</li>
+            <li>Which province is home to the world's first national park, Banff National Park?</li>
+            <li>What is the name of the iconic waterfall located in Ontario, one of the most famous natural wonders in the world?</li>
+            <li>Which province is known as the "Polar Bear Capital of the World" because it's one of the best places to see polar bears in their natural habitat?</li>
+            <li>What is the official language of Quebec, making it unique compared to other provinces in Canada?</li>
+            <li>Which province is famous for its lobster and has the highest tides in the world in the Bay of Fundy?</li>
+            <li>What is the capital of Yukon, known for its vast wilderness and the Klondike Gold Rush region?</li>
+            <li>In which territory can you witness the spectacular Northern Lights?</li>
+            <li>What is the name of the language spoken by the Inuit people in Nunavut, the northernmost territory in Canada?</li>
+            <li>Which city in Newfoundland and Labrador is famous for its colorful jellybean-colored houses and is one of the oldest cities in North America?</li>
+        </ul>
+    </div>
+  <div id="viewDiv"></div>
+  <div class="textbox">
+    <p>Credit: Made by Faith B using ArcGIS Pro, and Information and text gernerated by ChatGPT</p>
+  </div>
+</body>
+</html>
